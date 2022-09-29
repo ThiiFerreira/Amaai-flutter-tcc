@@ -6,15 +6,15 @@ import 'package:flutter_application_1/screens/login.page.dart';
 
 import '../models/Token.dart';
 
-class ManutencaoDeDados extends StatefulWidget {
+class DadosDaConta extends StatefulWidget {
   var token;
-  ManutencaoDeDados({Key? key, required this.token}) : super(key: key);
+  DadosDaConta({Key? key, required this.token}) : super(key: key);
 
   @override
-  State<ManutencaoDeDados> createState() => _ManutencaoDeDados();
+  State<DadosDaConta> createState() => _DadosDaConta();
 }
 
-class _ManutencaoDeDados extends State<ManutencaoDeDados> {
+class _DadosDaConta extends State<DadosDaConta> {
   @override
   Widget build(BuildContext context) {
     String id = ConverteToken(widget.token).ConverteTokenParaId();

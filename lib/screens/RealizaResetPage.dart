@@ -6,6 +6,7 @@ import 'package:flutter_application_1/components/CamposSenha.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import '../Conexoes/ServiceResetSenha.dart';
 import '../components/CampoPreenchimento.dart';
 import 'login.page.dart';
 
@@ -25,59 +26,13 @@ class RealizaReset extends StatefulWidget {
 }
 
 class _RealizaResetState extends State<RealizaReset> {
+  var serviceResetSenha = ServiceResetSenha();
+
   final _controladorCampoSenha = TextEditingController();
 
   final _controladorCampoConfSenha = TextEditingController();
 
   final _controladorCampoCodigoConfirmacao = TextEditingController();
-
-  void _confirmaResetSenha(camposReset reset, BuildContext context) async {
-    var response = await _realizaReset(reset);
-
-    var json = jsonDecode(utf8.decode(response.bodyBytes));
-
-    if (response.statusCode == 200) {
-      var mensagem = json[0]['message'].toString();
-
-      var snackBar = SnackBar(
-        content: Text(mensagem),
-      );
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
-      // ignore: use_build_context_synchronously
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const LoginPage(),
-        ),
-      );
-    } else {
-      var mensagem = "Falha ao redefinir senha";
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertaMensagem(mensagem: mensagem);
-        },
-      );
-    }
-  }
-
-  Future<http.Response> _realizaReset(camposReset reset) async {
-    var headers = {
-      'Content-Type': 'Application/json',
-    };
-    var resetJson = jsonEncode({
-      "email": reset.email,
-      "Password": reset.Password,
-      "RePassword": reset.RePassword,
-      "Token": reset.token,
-    });
-    var url =
-        Uri.parse("https://app-tcc-amai-producao.herokuapp.com/efetua-reset");
-    var response = await http.post(url, headers: headers, body: resetJson);
-    return response;
-  }
 
   bool carregando = false;
 
@@ -160,7 +115,7 @@ class _RealizaResetState extends State<RealizaReset> {
                             widget.token);
                         if (widget.codigoVerificacao.toString() ==
                             _controladorCampoCodigoConfirmacao.text) {
-                          _confirmaResetSenha(reset, context);
+                          serviceResetSenha.realizaResetSenha(reset, context);
                         } else {
                           var mensagem = "Falha ao redefinir senha";
                           showDialog(
@@ -181,13 +136,4 @@ class _RealizaResetState extends State<RealizaReset> {
       ),
     );
   }
-}
-
-class camposReset {
-  final String email;
-  final String Password;
-  final String RePassword;
-  final String token;
-
-  camposReset(this.email, this.Password, this.RePassword, this.token);
 }

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import '../Conexoes/ServiceTarefas.dart';
 import 'HomePage.dart';
 import 'TarefaFinalizada.dart';
@@ -20,7 +18,6 @@ class _HistoricoTarefasState extends State<HistoricoTarefas> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     todasTarefasFinalizadas =
         serviceTarefa.pegarTarefasFinalizads(widget.token);

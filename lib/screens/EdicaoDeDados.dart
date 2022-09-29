@@ -19,6 +19,7 @@ class EdicaoDeDados extends StatefulWidget {
 
 class _EdicaoDeDadosState extends State<EdicaoDeDados> {
   var serviceAtualizarDados = ServiceEdicaoDados();
+
   void recuperaDadosEConverte(String id, String token) async {
     var response = await serviceAtualizarDados.recuperaDados(id, token);
 

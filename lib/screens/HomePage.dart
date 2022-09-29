@@ -1,12 +1,11 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/HistoricoTarefas.dart';
 import 'package:flutter_application_1/screens/login.page.dart';
 import 'package:flutter_application_1/screens/tarefas.page.dart';
 
 import '../models/Token.dart';
-import 'ManutencaoDeDados.dart';
+import 'DadosDaConta.dart';
 
 class HomePage extends StatefulWidget {
   var token;
@@ -187,7 +186,7 @@ class _HomePageState extends State<HomePage> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      ManutencaoDeDados(token: widget.token)),
+                                      DadosDaConta(token: widget.token)),
                             );
                           },
                           child: Column(

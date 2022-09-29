@@ -1,8 +1,5 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/tarefa.page.dart';
-import 'package:http/http.dart' as http;
-
 import '../Conexoes/ServiceTarefas.dart';
 import '../models/Token.dart';
 import 'CriarTarefaPage.dart';
