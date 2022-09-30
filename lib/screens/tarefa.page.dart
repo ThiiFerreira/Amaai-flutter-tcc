@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:intl/intl.dart';
 
 import '../Conexoes/ServiceTarefas.dart';
 import '../models/Token.dart';
@@ -76,6 +77,14 @@ class _TarefaPageState extends State<TarefaPage> {
       speak();
       _reproduzSom = false;
     }
+
+    int hora =
+        int.tryParse(widget.tarefa['horaAlerta'].toString().substring(0, 2))!;
+    int min =
+        int.tryParse(widget.tarefa['horaAlerta'].toString().substring(3, 5))!;
+    print(widget.tarefa['horaAlerta']);
+    print(hora);
+    print(min);
 
     String role = ConverteToken(widget.token).ConverteTokenParaRole();
 

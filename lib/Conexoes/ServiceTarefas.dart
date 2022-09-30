@@ -38,13 +38,14 @@ class ServiceTarefas {
     var conexaoComOWpp = ConexaoComOWpp();
 
     var id = ConverteToken(token).ConverteTokenParaId();
-    print(id);
     var response = await _realizaPostTarefa(tarefa, token);
 
     var json = jsonDecode(utf8.decode(response.bodyBytes));
 
     if (response.statusCode == 201) {
-      //conexaoComOWpp.enviarMensagemParaOWhatsAppIdoso(token, id);
+      String mensagem =
+          "Uma tarefa foi criada para ser feita as ${tarefa.horaAlerta} no dia ${tarefa.dataAlerta}, não esqueça de realiza-lá 😁";
+      //conexaoComOWpp.enviarMensagemParaOWhatsAppIdoso(token, id, mensagem);
 
       var snackBar = const SnackBar(
         content: Text('Tarefa criada com sucesso!'),
@@ -154,12 +155,7 @@ class ServiceTarefas {
 
       //Navigator.pop(context, true);
       // ignore: use_build_context_synchronously
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => TarefasPage(token: token),
-        ),
-      );
+      Navigator.pop(context, true);
     } else {
       var mensagem = 'Erro ao excluir tarefa';
       showDialog(
@@ -215,4 +211,6 @@ class ServiceTarefas {
 
     return response;
   }
+
+  void _verificaSeTarefaEstaAtrasada(Tarefa tarefa) {}
 }

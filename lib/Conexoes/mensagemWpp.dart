@@ -2,7 +2,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ConexaoComOWpp {
-  Future<void> enviarMensagemParaOWhatsAppIdoso(String token, String id) async {
+  Future<void> enviarMensagemParaOWhatsAppIdoso(
+      String token, String id, String? body) async {
     //inicio do bloco para recuperar contato do idoso
     var url = Uri.parse(
         "https://app-tcc-amai-producao.herokuapp.com/RecuperaEAtualizaDados/assistido/$id/contato");
@@ -19,13 +20,13 @@ class ConexaoComOWpp {
 
     //inicio do bloco para enviar a mensagem para o idoso
     var tokenMensagem =
-        "EAAHBE9UHYEgBAOZBvs769dvklG5f3YMIyhDbqtlFkHAaKaeXf0b7NUXZC1dbx7w4zZAWXKHdGlFCbaAe9ursFyifBuiJMQi55nWZBOh4mvDojAKi1sYJ5MYuV39xpX2IQ7QknpkAgWnZC9jR5UXTmi2x1BbBOeXSZADpfHTV98Q9mkyIfKqmiekZCYvKPA8vahCv1JJlX7QZBODVY5LcZA6LE";
+        "EAAHBE9UHYEgBAAiZBAY51y4k8o6gjdA9KiNJJkzJC37vwKkndne4KozUm8Sh8nUn3wVqysrF9RTdlYEGvyaSjuvBpH2zZA9esb2zggaoX2d0GtXZBjwSxr2sU50nve6fCm4zQxCk0gTw90GBNokdWCqa0OWsf6hHaJZBiAg9xiV17uocxeGyZC83BYon5SFQWGyKZAPpy3LqIQ6PJvDgnZA";
     headers = {
       'Content-Type': 'Application/json',
       'Authorization': 'Bearer $tokenMensagem'
     };
 
-    var mensagem = jsonEncode({
+    var mensagemTemplate = jsonEncode({
       "messaging_product": "whatsapp",
       "to": "$contato",
       "type": "template",
@@ -35,9 +36,25 @@ class ConexaoComOWpp {
       }
     });
 
+    var mensagemPersonalizada = jsonEncode({
+      "messaging_product": "whatsapp",
+      "to": "$contato",
+      "type": "text",
+      "text": {
+        "body": "*TAREFA CRIADA*\n"
+        //"$body",
+      }
+    });
+
     url =
         Uri.parse("https://graph.facebook.com/v14.0/105984795618762/messages");
-    response = await http.post(url, headers: headers, body: mensagem);
+    response = await http.post(url, headers: headers, body: mensagemTemplate);
+    if (response.statusCode == 200) {
+      print("Mensagem enviada");
+    } else {
+      print("erro ao enviar mensagem");
+      print(response.body);
+    }
     //fim do bloco
   }
 }
