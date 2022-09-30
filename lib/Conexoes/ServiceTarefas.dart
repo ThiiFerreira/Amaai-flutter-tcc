@@ -43,9 +43,8 @@ class ServiceTarefas {
     var json = jsonDecode(utf8.decode(response.bodyBytes));
 
     if (response.statusCode == 201) {
-      String mensagem =
-          "Uma tarefa foi criada para ser feita as ${tarefa.horaAlerta} no dia ${tarefa.dataAlerta}, não esqueça de realiza-lá 😁";
-      //conexaoComOWpp.enviarMensagemParaOWhatsAppIdoso(token, id, mensagem);
+      conexaoComOWpp.enviarMensagemParaOWhatsAppIdoso(
+          token, id, tarefa.horaAlerta, tarefa.dataAlerta);
 
       var snackBar = const SnackBar(
         content: Text('Tarefa criada com sucesso!'),

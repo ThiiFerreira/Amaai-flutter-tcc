@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 
 class ConexaoComOWpp {
   Future<void> enviarMensagemParaOWhatsAppIdoso(
-      String token, String id, String? body) async {
+      String token, String id, String? hora, String? data) async {
     //inicio do bloco para recuperar contato do idoso
     var url = Uri.parse(
         "https://app-tcc-amai-producao.herokuapp.com/RecuperaEAtualizaDados/assistido/$id/contato");
@@ -36,19 +36,29 @@ class ConexaoComOWpp {
       }
     });
 
-    var mensagemPersonalizada = jsonEncode({
+    var mensagemTemplatePersonalizada = jsonEncode({
       "messaging_product": "whatsapp",
       "to": "$contato",
-      "type": "text",
-      "text": {
-        "body": "*TAREFA CRIADA*\n"
-        //"$body",
+      "type": "template",
+      "template": {
+        "name": "alerta_tarefa_criada_personalizada",
+        "language": {"code": "pt_BR"},
+        "components": [
+          {
+            "type": "body",
+            "parameters": [
+              {"type": "text", "text": "$hora"},
+              {"type": "text", "text": "$data"}
+            ]
+          }
+        ]
       }
     });
 
     url =
-        Uri.parse("https://graph.facebook.com/v14.0/105984795618762/messages");
-    response = await http.post(url, headers: headers, body: mensagemTemplate);
+        Uri.parse("https://graph.facebook.com/v13.0/105984795618762/messages");
+    response = await http.post(url,
+        headers: headers, body: mensagemTemplatePersonalizada);
     if (response.statusCode == 200) {
       print("Mensagem enviada");
     } else {
