@@ -1,7 +1,6 @@
 // ignore_for_file: deprecated_member_use, prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/screens/HistoricoTarefas.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import '../Conexoes/ServiceTarefas.dart';
 import '../models/Token.dart';

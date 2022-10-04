@@ -1,8 +1,7 @@
-import 'dart:math';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/tarefa.page.dart';
-import 'package:intl/intl.dart';
 import '../Conexoes/ServiceTarefas.dart';
 import '../models/Token.dart';
 import 'CriarTarefaPage.dart';
@@ -33,33 +32,6 @@ class _TarefasPageState extends State<TarefasPage> {
     setState(() {
       todasTarefas = _serviceTarefas.pegarTarefas(widget.token);
     });
-  }
-
-  int comparaDatas(tarefa) {
-    DateTime now = DateTime.now();
-    var data = DateFormat('yyyy-MM-dd').format(now);
-    now = DateTime.parse(data);
-
-    DateTime now2 = DateTime(
-        int.tryParse(tarefa['dataAlerta'].toString().substring(6, 10))!,
-        int.tryParse(tarefa['dataAlerta'].toString().substring(3, 5))!,
-        int.tryParse(tarefa['dataAlerta'].toString().substring(0, 2))!);
-    int atrasada = now.compareTo(now2);
-
-    if (atrasada == 0) {
-      int horaTarefa =
-          int.tryParse(tarefa['horaAlerta'].toString().substring(0, 2))!;
-      int minTarefa =
-          int.tryParse(tarefa['horaAlerta'].toString().substring(3, 5))!;
-      var horaAtual = TimeOfDay.now();
-      if (horaAtual.hour > horaTarefa) {
-        atrasada = 1;
-      }
-      if (horaAtual.hour == horaTarefa && horaAtual.minute > minTarefa) {
-        atrasada = 1;
-      }
-    }
-    return atrasada;
   }
 
   @override
@@ -101,10 +73,12 @@ class _TarefasPageState extends State<TarefasPage> {
                   itemBuilder: (context, index) {
                     var tarefa = snapshot.data![index];
                     var subtitle =
+                        // ignore: prefer_interpolation_to_compose_strings
                         '${'Hora: ' + tarefa['horaAlerta']}, Data: ' +
                             tarefa['dataAlerta'];
 
-                    var atrasada = comparaDatas(tarefa);
+                    var atrasada =
+                        _serviceTarefas.verificaSeTarefaEstaAtrasada(tarefa);
 
                     return Card(
                       child: ListTile(
@@ -148,17 +122,12 @@ class _TarefasPageState extends State<TarefasPage> {
         floatingActionButton: role == "responsavel"
             ? FloatingActionButton(
                 onPressed: () async {
-                  bool criou = await Navigator.push(
+                  Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => CriarTarefa(token: widget.token),
                     ),
                   );
-                  if (criou) {
-                    setState(() {
-                      todasTarefas = _serviceTarefas.pegarTarefas(widget.token);
-                    });
-                  }
                 },
                 tooltip: 'Criar tarefa',
                 child: const Icon(Icons.add),

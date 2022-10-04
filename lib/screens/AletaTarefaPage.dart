@@ -1,22 +1,23 @@
 // ignore_for_file: deprecated_member_use, prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import '../Conexoes/ServiceTarefas.dart';
+import '../models/Tarefa.dart';
 import '../models/Token.dart';
 import 'CriarTarefaPage.dart';
 
 // ignore: must_be_immutable
-class TarefaPage extends StatefulWidget {
-  Map<String, dynamic> tarefa;
+class AletaTarefaPage extends StatefulWidget {
+  Tarefa tarefa;
   var token;
-  TarefaPage({Key? key, required this.tarefa, this.token}) : super(key: key);
+  AletaTarefaPage({Key? key, required this.tarefa, this.token})
+      : super(key: key);
 
   @override
-  State<TarefaPage> createState() => _TarefaPageState();
+  State<AletaTarefaPage> createState() => _AletaTarefaPageState();
 }
 
-class _TarefaPageState extends State<TarefaPage> {
+class _AletaTarefaPageState extends State<AletaTarefaPage> {
   var serviceTarefa = ServiceTarefas();
 
   bool isSpeaking = false;
@@ -49,7 +50,7 @@ class _TarefaPageState extends State<TarefaPage> {
   }
 
   void speak() async {
-    await _flutterTts.speak(widget.tarefa['titulo']);
+    await _flutterTts.speak(widget.tarefa.titulo);
   }
 
   void stop() async {
@@ -106,14 +107,14 @@ class _TarefaPageState extends State<TarefaPage> {
                           child: Column(
                             children: [
                               Text(
-                                widget.tarefa['horaAlerta'],
+                                widget.tarefa.horaAlerta,
                                 style: TextStyle(fontSize: 30),
                               ),
                               Divider(
                                 color: Colors.black,
                               ),
                               Text(
-                                widget.tarefa['dataAlerta'],
+                                widget.tarefa.dataAlerta,
                                 style: TextStyle(fontSize: 30),
                               ),
                             ],
@@ -140,13 +141,13 @@ class _TarefaPageState extends State<TarefaPage> {
                           child: Column(
                             children: [
                               Text(
-                                widget.tarefa['titulo'],
+                                widget.tarefa.titulo,
                                 style: TextStyle(fontSize: 30),
                                 textAlign: TextAlign.center,
                               ),
-                              if (widget.tarefa['descricao'] != null)
+                              if (widget.tarefa.descricao != null)
                                 Text(
-                                  widget.tarefa['descricao'],
+                                  widget.tarefa.descricao,
                                   style: TextStyle(fontSize: 25),
                                   textAlign: TextAlign.left,
                                 ),
@@ -221,7 +222,7 @@ class _TarefaPageState extends State<TarefaPage> {
                                         carregandoExcluir = true;
                                       });
                                       serviceTarefa.excluirTarefa(
-                                          widget.tarefa['id'].toString(),
+                                          widget.tarefa.id.toString(),
                                           widget.token,
                                           context);
                                       Navigator.of(context).pop();
@@ -282,7 +283,7 @@ class _TarefaPageState extends State<TarefaPage> {
                                         carregandoFinalizar = true;
                                       });
                                       serviceTarefa.finalizaTarefa(
-                                          widget.tarefa['id'].toString(),
+                                          widget.tarefa.id.toString(),
                                           widget.token,
                                           context);
                                       Navigator.of(context).pop();

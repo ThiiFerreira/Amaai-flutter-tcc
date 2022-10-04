@@ -1,14 +1,19 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/components/AlertaMensagem.dart';
 import 'package:flutter_application_1/screens/tarefas.page.dart';
+import 'package:intl/intl.dart';
 import '../Conexoes/mensagemWpp.dart';
 import '../models/Tarefa.dart';
 import '../models/Token.dart';
+import '../screens/AletaTarefaPage.dart';
 
 class ServiceTarefas {
+  late BuildContext _context;
+
   Future<List> pegarTarefas(String token) async {
     var headers = {'Authorization': 'Bearer $token'};
     var url = Uri.parse("https://app-tcc-amai-producao.herokuapp.com/tarefa");
@@ -34,6 +39,11 @@ class ServiceTarefas {
     }
   }
 
+  void mostraMensagem(Tarefa tarefa) {
+    print("Hehehe hora de fazer a tarefa");
+    AlertaMensagem(mensagem: "hora de fazer a pohha da tarefa");
+  }
+
   void criaTarefa(Tarefa tarefa, String token, BuildContext context) async {
     var conexaoComOWpp = ConexaoComOWpp();
 
@@ -43,8 +53,21 @@ class ServiceTarefas {
     var json = jsonDecode(utf8.decode(response.bodyBytes));
 
     if (response.statusCode == 201) {
-      conexaoComOWpp.enviarMensagemParaOWhatsAppIdoso(
-          token, id, tarefa.horaAlerta, tarefa.dataAlerta);
+      //conexaoComOWpp.enviarMensagemParaOWhatsAppIdoso(
+      //    token, id, tarefa.horaAlerta, tarefa.dataAlerta);
+      int segundosParaDisperta = _criaTimer(tarefa);
+      segundosParaDisperta = segundosParaDisperta + 1;
+      print("quantidade de segundos:");
+
+      print(segundosParaDisperta);
+
+      Timer(
+          Duration(seconds: segundosParaDisperta),
+          () => {
+                print("enviando mensagem"),
+                conexaoComOWpp.enviarMensagemParaOWhatsAppIdosoRealizarTarefa(
+                    token, id, tarefa)
+              });
 
       var snackBar = const SnackBar(
         content: Text('Tarefa criada com sucesso!'),
@@ -211,5 +234,53 @@ class ServiceTarefas {
     return response;
   }
 
-  void _verificaSeTarefaEstaAtrasada(Tarefa tarefa) {}
+  int verificaSeTarefaEstaAtrasada(tarefa) {
+    DateTime now = DateTime.now();
+    var data = DateFormat('yyyy-MM-dd').format(now);
+    now = DateTime.parse(data);
+
+    DateTime now2 = DateTime(
+        int.tryParse(tarefa['dataAlerta'].toString().substring(6, 10))!,
+        int.tryParse(tarefa['dataAlerta'].toString().substring(3, 5))!,
+        int.tryParse(tarefa['dataAlerta'].toString().substring(0, 2))!);
+    int atrasada = now.compareTo(now2);
+
+    if (atrasada == 0) {
+      int horaTarefa =
+          int.tryParse(tarefa['horaAlerta'].toString().substring(0, 2))!;
+      int minTarefa =
+          int.tryParse(tarefa['horaAlerta'].toString().substring(3, 5))!;
+      var horaAtual = TimeOfDay.now();
+
+      if (horaAtual.hour > horaTarefa) {
+        atrasada = 1;
+      }
+      if (horaAtual.hour == horaTarefa && horaAtual.minute > minTarefa) {
+        atrasada = 1;
+      }
+    }
+    return atrasada;
+  }
+
+  int _criaTimer(Tarefa tarefa) {
+    int anoTarefa =
+        int.tryParse(tarefa.dataAlerta.toString().substring(6, 10))!;
+
+    int mesTarefa = int.tryParse(tarefa.dataAlerta.toString().substring(3, 5))!;
+
+    int diaTarefa = int.tryParse(tarefa.dataAlerta.toString().substring(0, 2))!;
+
+    int horaTarefa =
+        int.tryParse(tarefa.horaAlerta.toString().substring(0, 2))!;
+
+    int minTarefa = int.tryParse(tarefa.horaAlerta.toString().substring(3, 5))!;
+
+    final dataCriacao = DateTime.now();
+    final dataTarefa =
+        DateTime(anoTarefa, mesTarefa, diaTarefa, horaTarefa, minTarefa);
+
+    final diferenca = dataTarefa.difference(dataCriacao);
+
+    return diferenca.inSeconds;
+  }
 }
