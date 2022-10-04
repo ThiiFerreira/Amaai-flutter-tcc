@@ -1,7 +1,8 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
-import '../Conexoes/ServiceCadasrtoResponsavel.dart';
+
+import '../Conexoes/ServiceCadastroResponsavel.dart';
 import '../components/CampoCEP.dart';
 import '../components/CampoData.dart';
 import '../components/CampoPreenchimento.dart';
@@ -18,7 +19,7 @@ class CadastroPage1 extends StatefulWidget {
 }
 
 class _CadastroPage1 extends State<CadastroPage1> {
-  var serviceCadastro = ServiceCadasrtoResponsavel();
+  var serviceCadastro = ServiceCadastroResponsavel();
   final _formKey = GlobalKey<FormState>();
 
   final _controladorCampoNome = TextEditingController();

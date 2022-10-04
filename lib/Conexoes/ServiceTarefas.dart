@@ -53,18 +53,14 @@ class ServiceTarefas {
     var json = jsonDecode(utf8.decode(response.bodyBytes));
 
     if (response.statusCode == 201) {
-      //conexaoComOWpp.enviarMensagemParaOWhatsAppIdoso(
-      //    token, id, tarefa.horaAlerta, tarefa.dataAlerta);
+      conexaoComOWpp.enviarMensagemParaOWhatsAppIdoso(
+          token, id, tarefa.horaAlerta, tarefa.dataAlerta);
       int segundosParaDisperta = _criaTimer(tarefa);
       segundosParaDisperta = segundosParaDisperta + 1;
-      print("quantidade de segundos:");
-
-      print(segundosParaDisperta);
 
       Timer(
           Duration(seconds: segundosParaDisperta),
           () => {
-                print("enviando mensagem"),
                 conexaoComOWpp.enviarMensagemParaOWhatsAppIdosoRealizarTarefa(
                     token, id, tarefa)
               });

@@ -4,7 +4,7 @@ import 'package:flutter_application_1/components/AlertaMensagem.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class ServiceCadasrtoResponsavel {
+class ServiceCadastroResponsavel {
   void criaCadastro(CadastroUsuario cadastro, BuildContext context) async {
     var response = await _realizaCadastro(cadastro);
     var json = jsonDecode(utf8.decode(response.bodyBytes));
