@@ -69,7 +69,7 @@ class ServiceTarefas {
         ),
       );
     } else {
-      var mensagem = json['errors']['Descricao'][0].toString();
+      var mensagem = "Falha ao criar tarefa";
 
       showDialog(
         context: context,
