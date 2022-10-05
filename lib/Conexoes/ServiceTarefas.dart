@@ -45,25 +45,14 @@ class ServiceTarefas {
   }
 
   void criaTarefa(Tarefa tarefa, String token, BuildContext context) async {
-    var conexaoComOWpp = ConexaoComOWpp();
-
     var id = ConverteToken(token).ConverteTokenParaId();
     var response = await _realizaPostTarefa(tarefa, token);
 
     var json = jsonDecode(utf8.decode(response.bodyBytes));
 
     if (response.statusCode == 201) {
-      conexaoComOWpp.enviarMensagemParaOWhatsAppIdoso(
-          token, id, tarefa.horaAlerta, tarefa.dataAlerta);
       int segundosParaDisperta = _criaTimer(tarefa);
       segundosParaDisperta = segundosParaDisperta + 1;
-
-      Timer(
-          Duration(seconds: segundosParaDisperta),
-          () => {
-                conexaoComOWpp.enviarMensagemParaOWhatsAppIdosoRealizarTarefa(
-                    token, id, tarefa)
-              });
 
       var snackBar = const SnackBar(
         content: Text('Tarefa criada com sucesso!'),
