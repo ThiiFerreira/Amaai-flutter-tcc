@@ -50,12 +50,13 @@ class ServiceTarefas {
 
     var json = jsonDecode(utf8.decode(response.bodyBytes));
 
-    if (response.statusCode == 201) {
+    if (response.statusCode == 200) {
+      var mensagem = json[0]["message"].toString();
       int segundosParaDisperta = _criaTimer(tarefa);
       segundosParaDisperta = segundosParaDisperta + 1;
 
-      var snackBar = const SnackBar(
-        content: Text('Tarefa criada com sucesso!'),
+      var snackBar = SnackBar(
+        content: Text(mensagem),
       );
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
