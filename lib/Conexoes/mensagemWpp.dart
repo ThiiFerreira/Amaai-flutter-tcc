@@ -87,8 +87,7 @@ class ConexaoComOWpp {
     //fim do bloco
 
     //inicio do bloco para enviar a mensagem para o idoso
-    var tokenMensagem =
-        "EAAHBE9UHYEgBAKZAi9JOPKJIHGelWjZCWNgO974AkIm6SWBMUH68ZC96KD20lBqZC3cZBsCRrMjI2X5cyV9deYJMNmZCzjy54XZAyPvGyCKRHm1Y4WzOHK8coojowkY105GXYfn8QODJ1eFtZCDPxAmLPr1lMjgI4JZBD6ouZC2JoAFGq5D8beyiRZCLdSK3L3W3ttBFqbxFtxWBwZDZD";
+    var tokenMensagem = "";
     headers = {
       'Content-Type': 'Application/json',
       'Authorization': 'Bearer $tokenMensagem'

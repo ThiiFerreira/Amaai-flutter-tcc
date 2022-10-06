@@ -197,6 +197,7 @@ class _CadastroPage1 extends State<CadastroPage1> {
                           _controladorCampoConfSenha.text);
                       cadastro.Email = _controladorCampoEmail.text;
                       serviceCadastro.criaCadastro(cadastro, context);
+                      loading.value = !loading.value;
                     }
                   },
                 ),

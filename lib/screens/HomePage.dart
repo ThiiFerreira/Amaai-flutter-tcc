@@ -5,6 +5,7 @@ import 'package:flutter_application_1/screens/login.page.dart';
 import 'package:flutter_application_1/screens/tarefas.page.dart';
 
 import '../models/Token.dart';
+import 'DadosDaConta copy.dart';
 import 'DadosDaConta.dart';
 
 class HomePage extends StatefulWidget {
@@ -186,7 +187,7 @@ class _HomePageState extends State<HomePage> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      DadosDaConta(token: widget.token)),
+                                      DadosDaContaTeste(token: widget.token)),
                             );
                           },
                           child: Column(
