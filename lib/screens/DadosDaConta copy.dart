@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/EdicaoDeDados.dart';
 
 import 'package:flutter_application_1/screens/cadastro.page2.dart';
-import 'package:flutter_application_1/screens/login.page.dart';
 
 import '../models/Token.dart';
 
@@ -29,7 +28,7 @@ class _DadosDaContaTeste extends State<DadosDaContaTeste> {
         children: [
           EditarDadosResponsavel(token: widget.token),
           EditarDadosAssistido(token: widget.token),
-          CadastrarAssistido(token: widget.token, id: id),
+          if (temIdoso == "0") CadastrarAssistido(token: widget.token, id: id),
         ],
       ),
     );
@@ -43,6 +42,7 @@ class EditarDadosResponsavel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      margin: EdgeInsets.all(1),
       child: Column(
         //mainAxisSize: MainAxisSize.min,
         children: [
@@ -71,6 +71,7 @@ class EditarDadosAssistido extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      margin: EdgeInsets.all(1),
       child: Column(
         //mainAxisSize: MainAxisSize.min,
         children: [
@@ -101,6 +102,7 @@ class CadastrarAssistido extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      margin: EdgeInsets.all(1),
       child: Column(
         //mainAxisSize: MainAxisSize.min,
         children: [
