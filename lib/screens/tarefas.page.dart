@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -20,18 +22,49 @@ class TarefasPage extends StatefulWidget {
 class _TarefasPageState extends State<TarefasPage> {
   late Future<List> todasTarefas;
 
-  var _serviceTarefas = ServiceTarefas();
+  var serviceTarefas = ServiceTarefas();
+
+  bool carregando = false;
 
   @override
   void initState() {
     super.initState();
-    todasTarefas = _serviceTarefas.pegarTarefas(widget.token);
+    todasTarefas = serviceTarefas.pegarTarefas(widget.token);
   }
 
   Future<void> _recarregaLista() async {
     setState(() {
-      todasTarefas = _serviceTarefas.pegarTarefas(widget.token);
+      todasTarefas = serviceTarefas.pegarTarefas(widget.token);
     });
+  }
+
+  Future<void> excluirTarefaRapido(String id) async {
+    Widget cancelaButton = FlatButton(
+      child: const Text("CANCELAR"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget okButton = FlatButton(
+      child: const Text("OK"),
+      onPressed: () async {
+        serviceTarefas.excluirTarefa(id, widget.token, context);
+        print("tinha que esta aqui antes");
+      },
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Tem certeza?"),
+          actionsAlignment: MainAxisAlignment.spaceEvenly,
+          actions: [
+            cancelaButton,
+            okButton,
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -78,7 +111,7 @@ class _TarefasPageState extends State<TarefasPage> {
                             tarefa['dataAlerta'];
 
                     var atrasada =
-                        _serviceTarefas.verificaSeTarefaEstaAtrasada(tarefa);
+                        serviceTarefas.verificaSeTarefaEstaAtrasada(tarefa);
 
                     return Card(
                       child: ListTile(
@@ -93,7 +126,7 @@ class _TarefasPageState extends State<TarefasPage> {
                           if (retorno) {
                             setState(() {
                               todasTarefas =
-                                  _serviceTarefas.pegarTarefas(widget.token);
+                                  serviceTarefas.pegarTarefas(widget.token);
                             });
                           }
                         },
@@ -108,6 +141,45 @@ class _TarefasPageState extends State<TarefasPage> {
                                 style: const TextStyle(color: Colors.red),
                               )
                             : Text(subtitle),
+                        trailing: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.white,
+                            onPrimary: Colors.red,
+                            elevation: 0,
+                          ),
+                          onPressed: () async {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text("Tem certeza?"),
+                                  actionsAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  actions: [
+                                    FlatButton(
+                                      child: const Text("CANCELAR"),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                    FlatButton(
+                                      child: const Text("OK"),
+                                      onPressed: () async {
+                                        serviceTarefas
+                                            .excluirTarefa(
+                                                tarefa['id'].toString(),
+                                                widget.token,
+                                                context)
+                                            .then((value) => _recarregaLista());
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                          child: const Icon(Icons.delete),
+                        ),
                       ),
                     );
                   },

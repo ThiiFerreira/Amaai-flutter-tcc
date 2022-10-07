@@ -3,6 +3,7 @@ import 'package:flutter_application_1/components/AlertaMensagem.dart';
 import 'package:flutter_application_1/components/CampoCEP.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import '../Conexoes/ServiceConta.dart';
 import '../Conexoes/ServiceEdicaoDados.dart';
 import '../components/CampoData.dart';
 import '../components/CampoPreenchimento.dart';
@@ -19,9 +20,10 @@ class EdicaoDeDados extends StatefulWidget {
 
 class _EdicaoDeDadosState extends State<EdicaoDeDados> {
   var serviceAtualizarDados = ServiceEdicaoDados();
+  var serviceConta = ServiceConta();
 
-  void recuperaDadosEConverte(String id, String token) async {
-    var response = await serviceAtualizarDados.recuperaDados(id, token);
+  void recuperaDadosResponsavelEConverte(String token) async {
+    var response = await serviceAtualizarDados.recuperaDadosResponsavel(token);
 
     var json = jsonDecode(utf8.decode(response.bodyBytes));
 
@@ -44,9 +46,9 @@ class _EdicaoDeDadosState extends State<EdicaoDeDados> {
     }
   }
 
-  void atualizaDados(DadosAtualizados dados, String id, String token) async {
-    var response =
-        await serviceAtualizarDados.realizaUpdateDeDados(dados, id, token);
+  void atualizaDadosResponsavel(DadosAtualizados dados, String token) async {
+    var response = await serviceAtualizarDados.realizaUpdateDeDadosResponsavel(
+        dados, token);
     String mensagem;
     if (response.statusCode == 204) {
       showDialog(
@@ -62,7 +64,7 @@ class _EdicaoDeDadosState extends State<EdicaoDeDados> {
       limpaControles();
       setState(() {
         Navigator.pop(context);
-        recuperaDadosEConverte(id, token);
+        recuperaDadosResponsavelEConverte(token);
       });
       var snackBar = const SnackBar(
         content: Text('Dados atualizados com sucesso!'),
@@ -106,7 +108,7 @@ class _EdicaoDeDadosState extends State<EdicaoDeDados> {
   @override
   Widget build(BuildContext context) {
     id = ConverteToken(widget.token).ConverteTokenParaId();
-    recuperaDadosEConverte(id, widget.token);
+    recuperaDadosResponsavelEConverte(widget.token);
     return Scaffold(
         appBar: AppBar(
           title: const Text("Edição de dados responsavel"),
@@ -223,7 +225,7 @@ class _EdicaoDeDadosState extends State<EdicaoDeDados> {
                               controladorCampoTelefone.text,
                               controladorCampoEmail.text,
                               controladorCampoEndereco.text);
-                          atualizaDados(dados, id, widget.token);
+                          atualizaDadosResponsavel(dados, widget.token);
                         },
                         style: TextButton.styleFrom(
                           backgroundColor: Colors.blue,
@@ -231,6 +233,56 @@ class _EdicaoDeDadosState extends State<EdicaoDeDados> {
                         ),
                         child: const Text("Finalizar edição"),
                       ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        OutlinedButton(
+                          style: OutlinedButton.styleFrom(
+                            side: const BorderSide(color: Colors.red),
+                            primary: Colors.red,
+                          ),
+                          child: const Text('Excluir conta'),
+                          onPressed: () {
+                            TextEditingController controlador =
+                                TextEditingController();
+
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: const Text(
+                                        "Digite sua senha para validar:"),
+                                    content: Form(
+                                        child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        CampoPreenchimento(
+                                            controlador: controlador,
+                                            rotulo: "Senha")
+                                      ],
+                                    )),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () =>
+                                            Navigator.pop(context, false),
+                                        child: const Text('Cancelar'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          serviceConta.excluirConta(
+                                              controlador.text,
+                                              widget.token,
+                                              context);
+                                        },
+                                        child: const Text('Confirmar'),
+                                      ),
+                                    ],
+                                  );
+                                });
+                          },
+                        ),
+                      ],
+                    ),
                     const SizedBox(
                       height: 20,
                     ),
@@ -255,22 +307,10 @@ class EdicaoDeDadosAssistido extends StatefulWidget {
 }
 
 class _EdicaoDeDadosAssistidoState extends State<EdicaoDeDadosAssistido> {
-  Future<http.Response> recuperaDados(String id) async {
-    String token = widget.token;
-    var headers = {
-      'Content-Type': 'Application/json',
-      'Authorization': 'Bearer $token'
-    };
+  var serviceAtualizarDados = ServiceEdicaoDados();
 
-    var url = Uri.parse(
-        "https://app-tcc-amai-producao.herokuapp.com/RecuperaEAtualizaDados/assistido/$id");
-    var response = await http.get(url, headers: headers);
-
-    return response;
-  }
-
-  void recuperaDadosEConverte(String id) async {
-    var response = await recuperaDados(id);
+  void recuperaDadosAssistidoEConverte(String token) async {
+    var response = await serviceAtualizarDados.recuperaDadosAssistido(token);
 
     var json = jsonDecode(utf8.decode(response.bodyBytes));
 
@@ -292,32 +332,9 @@ class _EdicaoDeDadosAssistidoState extends State<EdicaoDeDadosAssistido> {
     }
   }
 
-  Future<http.Response> realizaUpdateDeDados(
-      DadosAtualizados dados, String id) async {
-    String token = widget.token;
-    var headers = {
-      'Content-Type': 'Application/json',
-      'Authorization': 'Bearer $token'
-    };
-
-    var cadastroJson = jsonEncode({
-      "username": dados.username,
-      "nome": dados.nome,
-      "cpf": dados.cpf,
-      "dataNascimento": dados.dataNascimento,
-      "telefone": dados.telefone,
-      "endereco": dados.endereco
-    });
-
-    var url = Uri.parse(
-        "https://app-tcc-amai-producao.herokuapp.com/RecuperaEAtualizaDados/assistido/$id");
-    var response = await http.put(url, headers: headers, body: cadastroJson);
-
-    return response;
-  }
-
-  void atualizaDados(DadosAtualizados dados, String id) async {
-    var response = await realizaUpdateDeDados(dados, id);
+  void atualizaDadosAssistido(DadosAtualizados dados, String token) async {
+    var response =
+        await serviceAtualizarDados.realizaUpdateDeDadosAssistido(dados, token);
     String mensagem;
     if (response.statusCode == 204) {
       showDialog(
@@ -333,7 +350,7 @@ class _EdicaoDeDadosAssistidoState extends State<EdicaoDeDadosAssistido> {
       limpaControles();
       setState(() {
         Navigator.pop(context);
-        recuperaDadosEConverte(id);
+        recuperaDadosAssistidoEConverte(widget.token);
       });
       var snackBar = const SnackBar(
         content: Text('Dados atualizados com sucesso!'),
@@ -371,11 +388,9 @@ class _EdicaoDeDadosAssistidoState extends State<EdicaoDeDadosAssistido> {
   bool bloqueado = true;
   IconData icone = Icons.edit;
 
-  String id = '';
   @override
   Widget build(BuildContext context) {
-    id = ConverteToken(widget.token).verificaSeTemAssistidoCadastrado();
-    recuperaDadosEConverte(id);
+    recuperaDadosAssistidoEConverte(widget.token);
     return Scaffold(
         appBar: AppBar(
           title: const Text("Edição de dados Assistido"),
@@ -484,7 +499,7 @@ class _EdicaoDeDadosAssistidoState extends State<EdicaoDeDadosAssistido> {
                               controladorCampoTelefone.text,
                               null,
                               controladorCampoEndereco.text);
-                          atualizaDados(dados, id);
+                          atualizaDadosAssistido(dados, widget.token);
                         },
                         style: TextButton.styleFrom(
                           backgroundColor: Colors.blue,

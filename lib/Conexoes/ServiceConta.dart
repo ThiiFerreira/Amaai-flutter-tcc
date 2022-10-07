@@ -1,0 +1,59 @@
+import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+import '../components/AlertaMensagem.dart';
+import '../models/Token.dart';
+import '../screens/login.page.dart';
+
+class ServiceConta {
+  Future<void> excluirConta(
+      String senha, String token, BuildContext context) async {
+    var login = ConverteToken(token).ConverteTokenParaNomeUsuario();
+
+    var response = await _realizaDeleteConta(login, senha, token);
+
+    if (response.statusCode == 204) {
+      var snackBar = const SnackBar(
+        content: Text('Conta excluida com sucesso!'),
+      );
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+      //Navigator.pop(context, true);
+      // ignore: use_build_context_synchronously
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginPage()),
+      );
+    } else {
+      //var json = jsonDecode(utf8.decode(response.bodyBytes));
+
+      var mensagem = response.body.toString();
+
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertaMensagem(mensagem: mensagem);
+        },
+      );
+    }
+  }
+
+  Future<http.Response> _realizaDeleteConta(
+      String login, String senha, String token) async {
+    var headers = {
+      'Content-Type': 'Application/json',
+      'Authorization': 'Bearer $token'
+    };
+
+    var json = jsonEncode({"username": login, "password": senha});
+
+    var url = Uri.parse(
+        "https://app-tcc-amai-producao.herokuapp.com/dados/responsavel");
+
+    var response = await http.delete(url, headers: headers, body: json);
+
+    return response;
+  }
+}

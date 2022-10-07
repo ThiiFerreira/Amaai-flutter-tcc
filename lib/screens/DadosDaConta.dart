@@ -195,29 +195,4 @@ class _DadosDaConta extends State<DadosDaConta> {
       ),
     );
   }
-
-  Future<bool?> _deslogarDaConta() {
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text("Deseja deslogar do AMAAI?"),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context, false),
-                child: const Text('Cancelar'),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const LoginPage()),
-                  );
-                },
-                child: const Text('Sim'),
-              ),
-            ],
-          );
-        });
-  }
 }

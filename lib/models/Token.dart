@@ -18,6 +18,12 @@ class ConverteToken {
     return id;
   }
 
+  String ConverteTokenParaNomeUsuario() {
+    Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+    String nome = (decodedToken["username"]);
+    return nome;
+  }
+
   String verificaSeTemAssistidoCadastrado() {
     Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
     var verificado = (decodedToken["assistido"]);

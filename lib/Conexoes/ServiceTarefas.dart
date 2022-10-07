@@ -6,10 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/components/AlertaMensagem.dart';
 import 'package:flutter_application_1/screens/tarefas.page.dart';
 import 'package:intl/intl.dart';
-import '../Conexoes/mensagemWpp.dart';
 import '../models/Tarefa.dart';
 import '../models/Token.dart';
-import '../screens/AletaTarefaPage.dart';
 
 class ServiceTarefas {
   late BuildContext _context;
@@ -151,7 +149,8 @@ class ServiceTarefas {
     return response;
   }
 
-  void excluirTarefa(String id, String token, BuildContext context) async {
+  Future<bool> excluirTarefa(
+      String id, String token, BuildContext context) async {
     var response = await _realizaDeleteTarefa(id, token);
 
     if (response.statusCode == 204) {
@@ -164,6 +163,7 @@ class ServiceTarefas {
       //Navigator.pop(context, true);
       // ignore: use_build_context_synchronously
       Navigator.pop(context, true);
+      return true;
     } else {
       var mensagem = 'Erro ao excluir tarefa';
       showDialog(
@@ -172,6 +172,7 @@ class ServiceTarefas {
           return AlertaMensagem(mensagem: mensagem);
         },
       );
+      return false;
     }
   }
 
