@@ -155,17 +155,12 @@ class _DadosDaConta extends State<DadosDaConta> {
                         onPrimary: Colors.black,
                       ),
                       onPressed: () async {
-                        bool criou = await Navigator.push(
+                        await Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => CadastroPage2(code: id),
                           ),
                         );
-                        if (criou) {
-                          setState(() {
-                            temIdoso = "1";
-                          });
-                        }
                       },
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,

@@ -269,7 +269,7 @@ class _EdicaoDeDadosState extends State<EdicaoDeDados> {
                                       ),
                                       TextButton(
                                         onPressed: () {
-                                          serviceConta.excluirConta(
+                                          serviceConta.excluirContaResponsavel(
                                               controlador.text,
                                               widget.token,
                                               context);
@@ -308,6 +308,7 @@ class EdicaoDeDadosAssistido extends StatefulWidget {
 
 class _EdicaoDeDadosAssistidoState extends State<EdicaoDeDadosAssistido> {
   var serviceAtualizarDados = ServiceEdicaoDados();
+  var serviceConta = ServiceConta();
 
   void recuperaDadosAssistidoEConverte(String token) async {
     var response = await serviceAtualizarDados.recuperaDadosAssistido(token);
@@ -507,6 +508,56 @@ class _EdicaoDeDadosAssistidoState extends State<EdicaoDeDadosAssistido> {
                         ),
                         child: const Text("Finalizar edição"),
                       ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        OutlinedButton(
+                          style: OutlinedButton.styleFrom(
+                            side: const BorderSide(color: Colors.red),
+                            primary: Colors.red,
+                          ),
+                          child: const Text('Excluir conta'),
+                          onPressed: () {
+                            TextEditingController controlador =
+                                TextEditingController();
+
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: const Text(
+                                        "Digite sua senha para validar:"),
+                                    content: Form(
+                                        child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        CampoPreenchimento(
+                                            controlador: controlador,
+                                            rotulo: "Senha")
+                                      ],
+                                    )),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () =>
+                                            Navigator.pop(context, false),
+                                        child: const Text('Cancelar'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          serviceConta.excluirContaAssistido(
+                                              controlador.text,
+                                              widget.token,
+                                              context);
+                                        },
+                                        child: const Text('Confirmar'),
+                                      ),
+                                    ],
+                                  );
+                                });
+                          },
+                        ),
+                      ],
+                    ),
                     const SizedBox(
                       height: 20,
                     ),

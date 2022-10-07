@@ -42,7 +42,7 @@ class _DadosDaContaLista extends State<DadosDaContaLista> {
           ? ListView(
               children: [
                 EditarDadosResponsavel(token: widget.token),
-                EditarDadosAssistido(token: widget.token),
+                if (temIdoso != "0") EditarDadosAssistido(token: widget.token),
                 if (temIdoso == "0")
                   CadastrarAssistido(token: widget.token, id: id),
               ],
@@ -103,53 +103,56 @@ class _DadosDaContaLista extends State<DadosDaContaLista> {
                           ),
                         ),
                       ),
-                      Container(
-                        height: 180,
-                        width: 150,
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                          border: Border.fromBorderSide(
-                            BorderSide(
-                              width: 4,
-                              color: Colors.black,
-                              style: BorderStyle.solid,
-                            ), //BorderSide
+                      if (temIdoso != "0")
+                        Container(
+                          height: 180,
+                          width: 150,
+                          decoration: const BoxDecoration(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10.0)),
+                            border: Border.fromBorderSide(
+                              BorderSide(
+                                width: 4,
+                                color: Colors.black,
+                                style: BorderStyle.solid,
+                              ), //BorderSide
+                            ),
                           ),
-                        ),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.white,
-                            onPrimary: Colors.black,
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => EdicaoDeDadosAssistido(
-                                      token: widget.token)),
-                            );
-                          },
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Icon(
-                                Icons.elderly,
-                                size: 80,
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              Text(
-                                'Editar dados assistido',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 20,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.white,
+                              onPrimary: Colors.black,
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        EdicaoDeDadosAssistido(
+                                            token: widget.token)),
+                              );
+                            },
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Icon(
+                                  Icons.elderly,
+                                  size: 80,
                                 ),
-                              ),
-                            ],
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Text(
+                                  'Editar dados assistido',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
                     ],
                   ),
                 ),
