@@ -62,7 +62,7 @@ class _CriarTarefaState extends State<CriarTarefa> {
                     rotulo: "Titulo",
                     dica: 'Ex. Dar comida para o rex',
                   ),
-                  CampoPreenchimento(
+                  CampoPreenchimentoSemValidacao(
                     controlador: controladorCampoDescricao,
                     rotulo: 'Descrição',
                     dica: 'Ex. Colocar 2 copo de ração',

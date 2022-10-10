@@ -1,12 +1,13 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/components/CampoConfirmaSenha.dart';
 
 import '../Conexoes/ServiceCadastroResponsavel.dart';
 import '../components/CampoCEP.dart';
 import '../components/CampoData.dart';
 import '../components/CampoPreenchimento.dart';
-import '../components/CamposSenha.dart';
+import '../components/CampoSenha.dart';
 import '../components/LogoETitulo.dart';
 import '../models/CadastroUsuario.dart';
 
@@ -125,17 +126,18 @@ class _CadastroPage1 extends State<CadastroPage1> {
                       controladorEnderecoCompleto: _controladorCampoEndereco,
                       icone: Icons.home),
                   const SizedBox(
-                    height: 15,
+                    height: 0,
                   ),
-                  CamposSenha(
+                  CampoSenha(
                     controlador: _controladorCampoSenha,
                     rotulo: 'Senha',
                   ),
                   const SizedBox(
-                    height: 10,
+                    height: 15,
                   ),
-                  CamposSenha(
+                  CampoConfirmaSenha(
                       controlador: _controladorCampoConfSenha,
+                      controladorVerificaIgualdadeSenha: _controladorCampoSenha,
                       rotulo: 'Confirmar Senha'),
                   const SizedBox(
                     height: 20,
@@ -184,6 +186,9 @@ class _CadastroPage1 extends State<CadastroPage1> {
                               );
                       }),
                   onPressed: () {
+                    setState(() {
+                      loading.value = !loading.value;
+                    });
                     var formValid = _formKey.currentState?.validate() ?? false;
                     if (formValid) {
                       var cadastro = CadastroUsuario(
@@ -197,8 +202,10 @@ class _CadastroPage1 extends State<CadastroPage1> {
                           _controladorCampoConfSenha.text);
                       cadastro.Email = _controladorCampoEmail.text;
                       serviceCadastro.criaCadastro(cadastro, context);
-                      loading.value = !loading.value;
                     }
+                    setState(() {
+                      loading.value = !loading.value;
+                    });
                   },
                 ),
               ),

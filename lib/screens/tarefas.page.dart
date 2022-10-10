@@ -116,13 +116,18 @@ class _TarefasPageState extends State<TarefasPage> {
                     return Card(
                       child: ListTile(
                         onTap: () async {
-                          bool retorno = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => TarefaPage(
-                                  tarefa: tarefa, token: widget.token),
-                            ),
-                          );
+                          bool retorno;
+                          try {
+                            retorno = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => TarefaPage(
+                                    tarefa: tarefa, token: widget.token),
+                              ),
+                            );
+                          } catch (excpetion) {
+                            retorno = false;
+                          }
                           if (retorno) {
                             setState(() {
                               todasTarefas =

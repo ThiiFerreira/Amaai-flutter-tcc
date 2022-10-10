@@ -3,9 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/components/CampoCEP.dart';
 import '../Conexoes/ServiceCadastroAssistido.dart';
+import '../components/CampoConfirmaSenha.dart';
 import '../components/CampoData.dart';
 import '../components/CampoPreenchimento.dart';
-import '../components/CamposSenha.dart';
+import '../components/CampoSenha.dart';
 import '../components/LogoETitulo.dart';
 import '../models/CadastroUsuario.dart';
 
@@ -127,15 +128,16 @@ class _CadastroPage2 extends State<CadastroPage2> {
                   const SizedBox(
                     height: 10,
                   ),
-                  CamposSenha(
+                  CampoSenha(
                     controlador: _controladorCampoSenha,
                     rotulo: 'Senha',
                   ),
                   const SizedBox(
                     height: 10,
                   ),
-                  CamposSenha(
+                  CampoConfirmaSenha(
                       controlador: _controladorCampoConfSenha,
+                      controladorVerificaIgualdadeSenha: _controladorCampoSenha,
                       rotulo: 'Confirmar Senha'),
                   const SizedBox(
                     height: 40,

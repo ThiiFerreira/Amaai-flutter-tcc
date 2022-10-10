@@ -2,11 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/components/AlertaMensagem.dart';
-import 'package:flutter_application_1/components/CamposSenha.dart';
+import 'package:flutter_application_1/components/CampoSenha.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import '../Conexoes/ServiceResetSenha.dart';
+import '../components/CampoConfirmaSenha.dart';
 import '../components/CampoPreenchimento.dart';
 import 'login.page.dart';
 
@@ -33,6 +34,8 @@ class _RealizaResetState extends State<RealizaReset> {
   final _controladorCampoConfSenha = TextEditingController();
 
   final _controladorCampoCodigoConfirmacao = TextEditingController();
+
+  final _formKey = GlobalKey<FormState>();
 
   bool carregando = false;
 
@@ -68,69 +71,78 @@ class _RealizaResetState extends State<RealizaReset> {
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Center(
-              child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CampoPreenchimento(
-                  controlador: _controladorCampoCodigoConfirmacao,
-                  rotulo: "Codigo de Confirmação",
-                  icone: Icons.pin),
-              const SizedBox(
-                height: 10,
-              ),
-              CamposSenha(
-                controlador: _controladorCampoSenha,
-                rotulo: 'Senha',
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              CamposSenha(
-                  controlador: _controladorCampoConfSenha,
-                  rotulo: 'Confirmar Senha'),
-              const SizedBox(
-                height: 10,
-              ),
-              carregando
-                  ? CircularProgressIndicator()
-                  : TextButton(
-                      style: TextButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                        elevation: 15,
-                      ),
-                      child: const Text(
-                        'CONFIRMAR RESET SENHA',
-                        style: TextStyle(
-                          color: Colors.white,
+              child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CampoPreenchimento(
+                    controlador: _controladorCampoCodigoConfirmacao,
+                    rotulo: "Codigo de Confirmação",
+                    icone: Icons.pin),
+                const SizedBox(
+                  height: 10,
+                ),
+                CampoSenha(
+                  controlador: _controladorCampoSenha,
+                  rotulo: 'Senha',
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                CampoConfirmaSenha(
+                    controlador: _controladorCampoConfSenha,
+                    controladorVerificaIgualdadeSenha: _controladorCampoSenha,
+                    rotulo: 'Confirmar Senha'),
+                const SizedBox(
+                  height: 10,
+                ),
+                carregando
+                    ? CircularProgressIndicator()
+                    : TextButton(
+                        style: TextButton.styleFrom(
+                          backgroundColor: Colors.blue,
+                          elevation: 15,
                         ),
+                        child: const Text(
+                          'CONFIRMAR RESET SENHA',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                        onPressed: () {
+                          var formValid =
+                              _formKey.currentState?.validate() ?? false;
+                          if (formValid) {
+                            setState(() {
+                              carregando = true;
+                            });
+                            var reset = camposReset(
+                                widget.email,
+                                _controladorCampoSenha.text,
+                                _controladorCampoConfSenha.text,
+                                widget.token);
+                            if (widget.codigoVerificacao.toString() ==
+                                _controladorCampoCodigoConfirmacao.text) {
+                              serviceResetSenha.realizaResetSenha(
+                                  reset, context);
+                            } else {
+                              var mensagem = "Falha ao redefinir senha";
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertaMensagem(mensagem: mensagem);
+                                },
+                              );
+                              setState(() {
+                                carregando = false;
+                              });
+                            }
+                          }
+                        },
                       ),
-                      onPressed: () {
-                        setState(() {
-                          carregando = true;
-                        });
-                        var reset = camposReset(
-                            widget.email,
-                            _controladorCampoSenha.text,
-                            _controladorCampoConfSenha.text,
-                            widget.token);
-                        if (widget.codigoVerificacao.toString() ==
-                            _controladorCampoCodigoConfirmacao.text) {
-                          serviceResetSenha.realizaResetSenha(reset, context);
-                        } else {
-                          var mensagem = "Falha ao redefinir senha";
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertaMensagem(mensagem: mensagem);
-                            },
-                          );
-                          setState(() {
-                            carregando = false;
-                          });
-                        }
-                      },
-                    ),
-            ],
+              ],
+            ),
           )),
         ),
       ),

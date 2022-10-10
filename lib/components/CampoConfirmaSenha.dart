@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:validatorless/validatorless.dart';
 
-class CamposSenha extends StatefulWidget {
+class CampoConfirmaSenha extends StatefulWidget {
+  final TextEditingController controladorVerificaIgualdadeSenha;
   final TextEditingController controlador;
   final String rotulo;
-  const CamposSenha({Key? key, required this.controlador, required this.rotulo})
+  const CampoConfirmaSenha(
+      {Key? key,
+      required this.controlador,
+      required this.rotulo,
+      required this.controladorVerificaIgualdadeSenha})
       : super(key: key);
 
   @override
-  State<CamposSenha> createState() => _CamposSenhaState();
+  State<CampoConfirmaSenha> createState() => _CampoConfirmaSenhaState();
 }
 
-class _CamposSenhaState extends State<CamposSenha> {
+class _CampoConfirmaSenhaState extends State<CampoConfirmaSenha> {
   bool _mostrarSenha = false;
 
   @override
@@ -41,12 +45,15 @@ class _CamposSenhaState extends State<CamposSenha> {
       ),
       obscureText: _mostrarSenha == false ? true : false,
       style: const TextStyle(fontSize: 20),
-      validator: Validatorless.multiple(
-        [
-          Validatorless.required("Campo requerido"),
-          Validatorless.min(6, "Senha precisa ter no mínimo 6 caracteres"),
-        ],
-      ),
+      validator: (value) {
+        if (value.toString().isEmpty) {
+          return "Campo requerido";
+        }
+        if (widget.controladorVerificaIgualdadeSenha.text != value.toString()) {
+          return "A senha deve ser igual a definida no campo acima";
+        }
+        return null;
+      },
     );
   }
 }

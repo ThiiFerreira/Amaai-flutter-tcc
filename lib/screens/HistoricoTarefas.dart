@@ -71,13 +71,18 @@ class _HistoricoTarefasState extends State<HistoricoTarefas> {
                     return Card(
                       child: ListTile(
                         onTap: () async {
-                          bool retorno = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => TarefaFinalizada(
-                                  tarefa: tarefa, token: widget.token),
-                            ),
-                          );
+                          bool retorno;
+                          try {
+                            retorno = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => TarefaFinalizada(
+                                    tarefa: tarefa, token: widget.token),
+                              ),
+                            );
+                          } catch (ex) {
+                            retorno = false;
+                          }
                           if (retorno) {
                             setState(() {
                               todasTarefasFinalizadas = serviceTarefa
