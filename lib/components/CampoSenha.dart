@@ -62,7 +62,7 @@ class _CampoSenhaState extends State<CampoSenha> {
         if (!verificarLetraMiniscula.hasMatch(value)) {
           return "A senha deve conter pelo menos uma letra minuscula !";
         }
-        if (!verificarNumero.hasMatch(value!)) {
+        if (!verificarNumero.hasMatch(value)) {
           return "A senha deve conter pelo menos um numero !";
         }
         return null;

@@ -221,6 +221,11 @@ class ServiceTarefas {
     return response;
   }
 
+  String extraiDiaDaData(tarefa) {
+    var dia = tarefa['dataAlerta'].toString().substring(0, 2);
+    return dia;
+  }
+
   int verificaSeTarefaEstaAtrasada(tarefa) {
     DateTime now = DateTime.now();
     var data = DateFormat('yyyy-MM-dd').format(now);

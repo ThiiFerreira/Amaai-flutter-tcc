@@ -49,7 +49,6 @@ class _TarefasPageState extends State<TarefasPage> {
       child: const Text("OK"),
       onPressed: () async {
         serviceTarefas.excluirTarefa(id, widget.token, context);
-        print("tinha que esta aqui antes");
       },
     );
     showDialog(
@@ -109,6 +108,7 @@ class _TarefasPageState extends State<TarefasPage> {
                         // ignore: prefer_interpolation_to_compose_strings
                         '${'Hora: ' + tarefa['horaAlerta']}, Data: ' +
                             tarefa['dataAlerta'];
+                    var dia = serviceTarefas.extraiDiaDaData(tarefa);
 
                     var atrasada =
                         serviceTarefas.verificaSeTarefaEstaAtrasada(tarefa);
@@ -135,7 +135,31 @@ class _TarefasPageState extends State<TarefasPage> {
                             });
                           }
                         },
-                        leading: const Icon(Icons.calendar_today, size: 50),
+                        leading: atrasada > 0
+                            ? const Icon(Icons.event_busy,
+                                color: Colors.red, size: 50)
+                            : Stack(
+                                children: [
+                                  const Icon(Icons.calendar_today, size: 50),
+                                  Positioned(
+                                    right: 0,
+                                    bottom: -5,
+                                    child: SizedBox(
+                                      height: 50,
+                                      width: 50,
+                                      child: Center(
+                                        child: Text(
+                                          dia,
+                                          style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                         title: Text(
                           tarefa['titulo'],
                         ),

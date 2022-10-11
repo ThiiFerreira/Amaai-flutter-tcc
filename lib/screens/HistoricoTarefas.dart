@@ -90,7 +90,8 @@ class _HistoricoTarefasState extends State<HistoricoTarefas> {
                             });
                           }
                         },
-                        leading: const Icon(Icons.event_available, size: 50),
+                        leading: const Icon(Icons.event_available,
+                            color: Colors.green, size: 50),
                         title: Text(tarefa['titulo']),
                         // ignore: prefer_interpolation_to_compose_strings
                         subtitle:

@@ -32,7 +32,7 @@ class _DadosDaContaLista extends State<DadosDaContaLista> {
             onPressed: () {
               setState(() {
                 lista = !lista;
-                !lista ? icone = Icons.list : icone = Icons.grid_4x4;
+                !lista ? icone = Icons.list : icone = Icons.grid_on;
               });
             },
           )
