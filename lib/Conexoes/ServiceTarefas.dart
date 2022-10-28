@@ -24,10 +24,23 @@ class ServiceTarefas {
     }
   }
 
-  Future<List> pegarTarefasFinalizads(String token) async {
+  Future<List> pegarTarefasFinalizadas(String token) async {
     var headers = {'Authorization': 'Bearer $token'};
     var url = Uri.parse(
         "https://app-tcc-amai-producao.herokuapp.com/tarefa/finalizadas");
+    var response = await http.get(url, headers: headers);
+    if (response.statusCode == 200) {
+      var json = jsonDecode(utf8.decode(response.bodyBytes));
+      return jsonDecode(utf8.decode(response.bodyBytes));
+    } else {
+      throw Exception("Erro ao carregar tarefas");
+    }
+  }
+
+  Future<List> pegarTarefasExcluidas(String token) async {
+    var headers = {'Authorization': 'Bearer $token'};
+    var url = Uri.parse(
+        "https://app-tcc-amai-producao.herokuapp.com/tarefa/excluidas");
     var response = await http.get(url, headers: headers);
     if (response.statusCode == 200) {
       var json = jsonDecode(utf8.decode(response.bodyBytes));
@@ -221,8 +234,13 @@ class ServiceTarefas {
     return response;
   }
 
-  String extraiDiaDaData(tarefa) {
+  String extraiDiaDaDataAlerta(tarefa) {
     var dia = tarefa['dataAlerta'].toString().substring(0, 2);
+    return dia;
+  }
+
+  String extraiDiaDaDataExclusao(tarefa) {
+    var dia = tarefa['dataExclusao'].toString().substring(0, 2);
     return dia;
   }
 

@@ -108,7 +108,7 @@ class _TarefasPageState extends State<TarefasPage> {
                         // ignore: prefer_interpolation_to_compose_strings
                         '${'Hora: ' + tarefa['horaAlerta']}, Data: ' +
                             tarefa['dataAlerta'];
-                    var dia = serviceTarefas.extraiDiaDaData(tarefa);
+                    var dia = serviceTarefas.extraiDiaDaDataAlerta(tarefa);
 
                     var atrasada =
                         serviceTarefas.verificaSeTarefaEstaAtrasada(tarefa);
