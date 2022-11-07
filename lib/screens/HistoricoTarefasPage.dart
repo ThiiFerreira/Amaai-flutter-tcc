@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/screens/TarefasExcluidas.dart';
-import 'package:flutter_application_1/screens/TarefasFinalizadas.dart';
+import 'package:flutter_application_1/screens/TarefasExcluidasPage.dart';
+import 'package:flutter_application_1/screens/TarefasFinalizadasPage.dart';
 import 'HomePage.dart';
 
 class HistoricoTarefas extends StatefulWidget {

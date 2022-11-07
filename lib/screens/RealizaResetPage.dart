@@ -9,7 +9,7 @@ import 'dart:convert';
 import '../Conexoes/ServiceResetSenha.dart';
 import '../components/CampoConfirmaSenha.dart';
 import '../components/CampoPreenchimento.dart';
-import 'login.page.dart';
+import 'LoginPage.dart';
 
 class RealizaReset extends StatefulWidget {
   String token;

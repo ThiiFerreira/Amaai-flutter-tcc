@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/DadosDaContaLista.dart';
-import 'package:flutter_application_1/screens/EdicaoDeDados.dart';
+import 'package:flutter_application_1/screens/EdicaoDeDadosPage.dart';
 import 'package:http/http.dart' as http;
 
 import '../components/AlertaMensagem.dart';
 import '../models/Token.dart';
-import '../screens/login.page.dart';
+import '../screens/LoginPage.dart';
 
 class ServiceConta {
   Future<void> excluirContaResponsavel(

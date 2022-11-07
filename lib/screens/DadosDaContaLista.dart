@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/screens/EdicaoDeDados.dart';
+import 'package:flutter_application_1/screens/EdicaoDeDadosPage.dart';
 
-import 'package:flutter_application_1/screens/cadastro.page2.dart';
+import 'package:flutter_application_1/screens/CadastroAssistidoPage.dart';
 
 import '../models/Token.dart';
 

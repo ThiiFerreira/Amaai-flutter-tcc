@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/screens/login.page.dart';
+import 'package:flutter_application_1/screens/LoginPage.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {

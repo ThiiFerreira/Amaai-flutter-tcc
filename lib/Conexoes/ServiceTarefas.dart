@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/components/AlertaMensagem.dart';
-import 'package:flutter_application_1/screens/tarefas.page.dart';
+import 'package:flutter_application_1/screens/TarefasPage.dart';
 import 'package:intl/intl.dart';
 import '../models/Tarefa.dart';
 import '../models/Token.dart';
@@ -48,11 +48,6 @@ class ServiceTarefas {
     } else {
       throw Exception("Erro ao carregar tarefas");
     }
-  }
-
-  void mostraMensagem(Tarefa tarefa) {
-    print("Hehehe hora de fazer a tarefa");
-    AlertaMensagem(mensagem: "hora de fazer a pohha da tarefa");
   }
 
   void criaTarefa(Tarefa tarefa, String token, BuildContext context) async {

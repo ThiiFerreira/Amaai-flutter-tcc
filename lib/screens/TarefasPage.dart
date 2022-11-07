@@ -3,7 +3,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/screens/tarefa.page.dart';
+import 'package:flutter_application_1/screens/TarefaPage.dart';
 import '../Conexoes/ServiceTarefas.dart';
 import '../models/Token.dart';
 import 'CriarTarefaPage.dart';

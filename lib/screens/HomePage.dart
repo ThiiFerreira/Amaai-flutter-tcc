@@ -1,12 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/screens/HistoricoTarefas.dart';
-import 'package:flutter_application_1/screens/login.page.dart';
-import 'package:flutter_application_1/screens/tarefas.page.dart';
+import 'package:flutter_application_1/screens/HistoricoTarefasPage.dart';
+import 'package:flutter_application_1/screens/LoginPage.dart';
+import 'package:flutter_application_1/screens/TarefasPage.dart';
 
 import '../models/Token.dart';
 import 'DadosDaContaLista.dart';
-import 'DadosDaConta.dart';
+import 'DadosDaContaPage.dart';
 
 class HomePage extends StatefulWidget {
   var token;

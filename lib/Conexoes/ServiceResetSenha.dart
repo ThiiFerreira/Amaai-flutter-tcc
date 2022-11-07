@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import '../screens/RealizaResetPage.dart';
-import '../screens/login.page.dart';
+import '../screens/LoginPage.dart';
 
 class ServiceResetSenha {
   void solicitarResetSenha(DadosResetSenha reset, BuildContext context) async {

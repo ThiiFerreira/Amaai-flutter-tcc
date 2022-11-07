@@ -7,7 +7,7 @@ import 'package:flutter_application_1/screens/HomePage.dart';
 import 'package:http/http.dart' as http;
 import '../components/CampoSenha.dart';
 import 'SolicitaResetSenhaPage.dart';
-import 'cadastro.page1.dart';
+import 'CadastroResponsavelPage.dart';
 
 class Login {
   final String email;
