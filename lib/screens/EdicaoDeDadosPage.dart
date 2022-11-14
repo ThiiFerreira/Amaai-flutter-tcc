@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/components/AlertaMensagem.dart';
 import 'package:flutter_application_1/components/CampoCEP.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter_application_1/components/CampoSenha.dart';
 import 'dart:convert';
 import '../Conexoes/ServiceConta.dart';
 import '../Conexoes/ServiceEdicaoDados.dart';
@@ -253,14 +253,15 @@ class _EdicaoDeDadosState extends State<EdicaoDeDados> {
                                     title: const Text(
                                         "Digite sua senha para validar:"),
                                     content: Form(
-                                        child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        CampoPreenchimento(
-                                            controlador: controlador,
-                                            rotulo: "Senha")
-                                      ],
-                                    )),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          CampoSenhaSemAutoValidacao(
+                                              controlador: controlador,
+                                              rotulo: "Senha")
+                                        ],
+                                      ),
+                                    ),
                                     actions: [
                                       TextButton(
                                         onPressed: () =>
@@ -531,7 +532,7 @@ class _EdicaoDeDadosAssistidoState extends State<EdicaoDeDadosAssistido> {
                                         child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        CampoPreenchimento(
+                                        CampoSenhaSemAutoValidacao(
                                             controlador: controlador,
                                             rotulo: "Senha")
                                       ],

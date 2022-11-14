@@ -162,26 +162,27 @@ class _CadastroPage2 extends State<CadastroPage2> {
                     child: SizedBox.expand(
                       child: TextButton(
                         child: AnimatedBuilder(
-                            animation: loading,
-                            builder: (context, _) {
-                              return loading.value
-                                  ? const SizedBox(
-                                      width: 20,
-                                      height: 20,
-                                      child: CircularProgressIndicator(
-                                        color: Colors.white,
-                                      ),
-                                    )
-                                  : const Text(
-                                      "Cadastrar Dados",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                        fontSize: 20,
-                                      ),
-                                    );
-                            }),
+                          animation: loading,
+                          builder: (context, _) {
+                            return loading.value
+                                ? const SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                : const Text(
+                                    "Cadastrar Dados",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                    ),
+                                  );
+                          },
+                        ),
                         onPressed: () {
                           var formValid =
                               _formKey.currentState?.validate() ?? false;

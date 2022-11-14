@@ -9,9 +9,10 @@ class LogoTitulo extends StatelessWidget {
     return Column(
       children: [
         SizedBox(
-          width: 78,
           height: 78,
-          child: Image.asset("assets/texte_cube.jpg"),
+          width: 78,
+          child: Image.network(
+              "https://cdn-icons-png.flaticon.com/128/5942/5942856.png"),
         ),
         const SizedBox(
           height: 5,

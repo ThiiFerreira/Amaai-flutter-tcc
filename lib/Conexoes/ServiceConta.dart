@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/DadosDaContaLista.dart';
-import 'package:flutter_application_1/screens/EdicaoDeDadosPage.dart';
+import 'package:flutter_application_1/screens/DadosDaContaPage.dart';
+import 'package:flutter_application_1/screens/HomePage.dart';
 import 'package:http/http.dart' as http;
 
 import '../components/AlertaMensagem.dart';
@@ -26,7 +27,9 @@ class ServiceConta {
       // ignore: use_build_context_synchronously
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const LoginPage()),
+        MaterialPageRoute(
+          builder: (context) => DadosDaConta(token: token),
+        ),
       );
     } else {
       //var json = jsonDecode(utf8.decode(response.bodyBytes));
@@ -76,8 +79,7 @@ class ServiceConta {
       // ignore: use_build_context_synchronously
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(
-            builder: (context) => DadosDaContaLista(token: token)),
+        MaterialPageRoute(builder: (context) => HomePage(token: token)),
       );
     } else {
       //var json = jsonDecode(utf8.decode(response.bodyBytes));
