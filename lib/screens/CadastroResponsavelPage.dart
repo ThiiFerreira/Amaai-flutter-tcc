@@ -142,76 +142,74 @@ class _CadastroPage1 extends State<CadastroPage1> {
                   const SizedBox(
                     height: 20,
                   ),
+                  Container(
+                    height: 50,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(10),
+                      ),
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        stops: const [0.3, 1],
+                        colors: [
+                          Colors.blue[900]!,
+                          Colors.blue,
+                        ],
+                      ),
+                    ),
+                    child: SizedBox.expand(
+                      child: TextButton(
+                        child: AnimatedBuilder(
+                            animation: loading,
+                            builder: (context, _) {
+                              return loading.value
+                                  ? const SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                      child: CircularProgressIndicator(
+                                        color: Colors.white,
+                                      ),
+                                    )
+                                  : const Text(
+                                      "Cadastrar Dados",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                      ),
+                                    );
+                            }),
+                        onPressed: () {
+                          setState(() {
+                            loading.value = !loading.value;
+                          });
+                          var formValid =
+                              _formKey.currentState?.validate() ?? false;
+                          if (formValid) {
+                            var cadastro = CadastroUsuario(
+                                _controladorCampoNome.text,
+                                _controladorCampoUsername.text,
+                                _controladorCampoCpf.text,
+                                _controladorCampoDataNasc.text,
+                                _controladorCampoTelefone.text,
+                                _controladorCampoEndereco.text,
+                                _controladorCampoSenha.text,
+                                _controladorCampoConfSenha.text);
+                            cadastro.Email = _controladorCampoEmail.text;
+                            serviceCadastro.criaCadastro(cadastro, context);
+                          }
+                          setState(() {
+                            loading.value = !loading.value;
+                          });
+                        },
+                      ),
+                    ),
+                  ),
                 ],
               ),
-            ),
-            Container(
-              height: 50,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(10),
-                ),
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  stops: const [0.3, 1],
-                  colors: [
-                    Colors.blue[900]!,
-                    Colors.blue,
-                  ],
-                ),
-              ),
-              child: SizedBox.expand(
-                child: TextButton(
-                  child: AnimatedBuilder(
-                      animation: loading,
-                      builder: (context, _) {
-                        return loading.value
-                            ? const SizedBox(
-                                width: 20,
-                                height: 20,
-                                child: CircularProgressIndicator(
-                                  color: Colors.white,
-                                ),
-                              )
-                            : const Text(
-                                "Cadastrar Dados",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                ),
-                              );
-                      }),
-                  onPressed: () {
-                    setState(() {
-                      loading.value = !loading.value;
-                    });
-                    var formValid = _formKey.currentState?.validate() ?? false;
-                    if (formValid) {
-                      var cadastro = CadastroUsuario(
-                          _controladorCampoNome.text,
-                          _controladorCampoUsername.text,
-                          _controladorCampoCpf.text,
-                          _controladorCampoDataNasc.text,
-                          _controladorCampoTelefone.text,
-                          _controladorCampoEndereco.text,
-                          _controladorCampoSenha.text,
-                          _controladorCampoConfSenha.text);
-                      cadastro.Email = _controladorCampoEmail.text;
-                      serviceCadastro.criaCadastro(cadastro, context);
-                    }
-                    setState(() {
-                      loading.value = !loading.value;
-                    });
-                  },
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 25,
             ),
           ],
         ),

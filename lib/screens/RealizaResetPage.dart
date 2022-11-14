@@ -35,6 +35,8 @@ class _RealizaResetState extends State<RealizaReset> {
 
   final _controladorCampoCodigoConfirmacao = TextEditingController();
 
+  final loading = ValueNotifier<bool>(false);
+
   final _formKey = GlobalKey<FormState>();
 
   bool carregando = false;
@@ -75,7 +77,23 @@ class _RealizaResetState extends State<RealizaReset> {
             key: _formKey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
+              children: <Widget>[
+                SizedBox(
+                  width: 200,
+                  height: 200,
+                  child: Image.asset("assets/Reset.png"),
+                ),
+                const SizedBox(
+                  height: 25,
+                ),
+                const Text(
+                  "Alterar sua senha",
+                  style: TextStyle(fontSize: 32, fontWeight: FontWeight.w500),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
                 CampoPreenchimento(
                     controlador: _controladorCampoCodigoConfirmacao,
                     rotulo: "Codigo de Confirmação",
@@ -85,7 +103,7 @@ class _RealizaResetState extends State<RealizaReset> {
                 ),
                 CampoSenha(
                   controlador: _controladorCampoSenha,
-                  rotulo: 'Senha',
+                  rotulo: 'Nova Senha',
                 ),
                 const SizedBox(
                   height: 10,
@@ -93,30 +111,58 @@ class _RealizaResetState extends State<RealizaReset> {
                 CampoConfirmaSenha(
                     controlador: _controladorCampoConfSenha,
                     controladorVerificaIgualdadeSenha: _controladorCampoSenha,
-                    rotulo: 'Confirmar Senha'),
+                    rotulo: 'Confirmar Nova Senha'),
                 const SizedBox(
-                  height: 10,
+                  height: 25,
                 ),
-                carregando
-                    ? CircularProgressIndicator()
-                    : TextButton(
-                        style: TextButton.styleFrom(
-                          backgroundColor: Colors.blue,
-                          elevation: 15,
-                        ),
-                        child: const Text(
-                          'CONFIRMAR RESET SENHA',
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    height: 60,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(5),
+                      ),
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        stops: const [0.3, 1],
+                        colors: [
+                          Colors.blue[900]!,
+                          Colors.blue,
+                        ],
+                      ),
+                    ),
+                    child: SizedBox.expand(
+                      child: TextButton(
+                        child: AnimatedBuilder(
+                          animation: loading,
+                          builder: (context, _) {
+                            return loading.value
+                                ? const SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                : const Text(
+                                    "Mudar senha",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                    ),
+                                  );
+                          },
                         ),
                         onPressed: () {
                           var formValid =
                               _formKey.currentState?.validate() ?? false;
                           if (formValid) {
-                            setState(() {
-                              carregando = true;
-                            });
+                            loading.value = !loading.value;
                             var reset = camposReset(
                                 widget.email,
                                 _controladorCampoSenha.text,
@@ -134,13 +180,14 @@ class _RealizaResetState extends State<RealizaReset> {
                                   return AlertaMensagem(mensagem: mensagem);
                                 },
                               );
-                              setState(() {
-                                carregando = false;
-                              });
+                              loading.value = !loading.value;
                             }
                           }
                         },
                       ),
+                    ),
+                  ),
+                ),
               ],
             ),
           )),

@@ -43,7 +43,7 @@ class _CampoSenhaState extends State<CampoSenha> {
       style: const TextStyle(fontSize: 20),
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: (value) {
-        final verificaCaracterEspecial = RegExp(r"[@!#$%^&*()/\\]");
+        final verificaCaracterEspecial = RegExp(r"[@+!#$%^&*()/\\]");
         final verificarLetraMaiucula = RegExp(r"[A-Z]");
         final verificarLetraMiniscula = RegExp(r"[A-Z]");
         final verificarNumero = RegExp(r"[0-9]");
