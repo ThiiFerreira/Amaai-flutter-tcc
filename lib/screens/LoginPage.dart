@@ -87,139 +87,142 @@ class _LoginPage extends State<LoginPage> {
       },
       child: Scaffold(
         body: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(42.0),
-                child: SizedBox(
-                  child: Image.network(
-                      "https://cdn-icons-png.flaticon.com/128/5942/5942856.png"),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    CampoPreenchimento(
-                      controlador: _controladorCampoUsername,
-                      rotulo: 'Username',
-                      icone: Icons.person,
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    CampoSenhaSemAutoValidacao(
-                      controlador: _controladorCampoSenha,
-                      rotulo: 'Senha',
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-                  height: 40,
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    child: const Text(
-                      "Esqueceu a senha ?",
-                      textAlign: TextAlign.right,
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const SolitaResetSenha(),
-                        ),
-                      );
-                    },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 80),
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(42.0),
+                  child: SizedBox(
+                    child: Image.network(
+                        "https://cdn-icons-png.flaticon.com/128/5942/5942856.png"),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  height: 60,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(5),
-                    ),
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      stops: const [0.3, 1],
-                      colors: [
-                        Colors.blue[900]!,
-                        Colors.blue,
-                      ],
-                    ),
-                  ),
-                  child: SizedBox.expand(
-                    child: TextButton(
-                      child: AnimatedBuilder(
-                        animation: loading,
-                        builder: (context, _) {
-                          return loading.value
-                              ? const SizedBox(
-                                  width: 20,
-                                  height: 20,
-                                  child: CircularProgressIndicator(
-                                    color: Colors.white,
-                                  ),
-                                )
-                              : const Text(
-                                  "Login",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                  ),
-                                );
-                        },
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      CampoPreenchimento(
+                        controlador: _controladorCampoUsername,
+                        rotulo: 'Username',
+                        icone: Icons.person,
                       ),
-                      onPressed: () => {
-                        loading.value = !loading.value,
-                        login = Login(_controladorCampoUsername.text,
-                            _controladorCampoSenha.text),
-                        realizaLogin(login),
-                      },
-                    ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      CampoSenhaSemAutoValidacao(
+                        controlador: _controladorCampoSenha,
+                        rotulo: 'Senha',
+                      ),
+                    ],
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 40,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    const Text("Não tem acesso? "),
-                    TextButton(
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+                    height: 40,
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                      child: const Text(
+                        "Esqueceu a senha ?",
+                        textAlign: TextAlign.right,
+                      ),
                       onPressed: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const CadastroPage1(),
+                            builder: (context) => const SolitaResetSenha(),
                           ),
                         );
                       },
-                      // ignore: prefer_const_constructors
-                      child: Text(
-                        "Cadastre-se",
-                        //textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.lightBlue,
-                          fontSize: 15,
-                        ),
-                      ),
-                    )
-                  ],
+                    ),
+                  ),
                 ),
-              ),
-            ],
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    height: 60,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(5),
+                      ),
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        stops: const [0.3, 1],
+                        colors: [
+                          Colors.blue[900]!,
+                          Colors.blue,
+                        ],
+                      ),
+                    ),
+                    child: SizedBox.expand(
+                      child: TextButton(
+                        child: AnimatedBuilder(
+                          animation: loading,
+                          builder: (context, _) {
+                            return loading.value
+                                ? const SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                : const Text(
+                                    "Login",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                    ),
+                                  );
+                          },
+                        ),
+                        onPressed: () => {
+                          loading.value = !loading.value,
+                          login = Login(_controladorCampoUsername.text,
+                              _controladorCampoSenha.text),
+                          realizaLogin(login),
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 40,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      const Text("Não tem acesso? "),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const CadastroPage1(),
+                            ),
+                          );
+                        },
+                        // ignore: prefer_const_constructors
+                        child: Text(
+                          "Cadastre-se",
+                          //textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.lightBlue,
+                            fontSize: 15,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
