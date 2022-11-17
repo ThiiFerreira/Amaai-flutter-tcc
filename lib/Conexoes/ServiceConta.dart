@@ -1,13 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/screens/DadosDaContaLista.dart';
-import 'package:flutter_application_1/screens/DadosDaContaPage.dart';
 import 'package:flutter_application_1/screens/HomePage.dart';
+import 'package:flutter_application_1/screens/LoginPage.dart';
 import 'package:http/http.dart' as http;
-
 import '../components/AlertaMensagem.dart';
 import '../models/Token.dart';
-import '../screens/LoginPage.dart';
 
 class ServiceConta {
   Future<void> excluirContaResponsavel(
@@ -28,7 +25,7 @@ class ServiceConta {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => DadosDaConta(token: token),
+          builder: (context) => const LoginPage(),
         ),
       );
     } else {
@@ -110,5 +107,18 @@ class ServiceConta {
     var response = await http.delete(url, headers: headers, body: json);
 
     return response;
+  }
+
+  Future<bool> fazRequisicaoRecuperaSeTemAssistidoCadastrado(
+      String token) async {
+    var headers = {'Authorization': 'Bearer $token'};
+    var url = Uri.parse(
+        "https://app-tcc-amai-producao.herokuapp.com/dados/responsavel/assistido");
+    var response = await http.get(url, headers: headers);
+    if (response.body == "true") {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

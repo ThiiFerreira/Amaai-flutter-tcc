@@ -12,19 +12,18 @@ import '../models/CadastroUsuario.dart';
 
 // ignore: must_be_immutable
 class CadastroPage2 extends StatefulWidget {
-  String code;
-  CadastroPage2({Key? key, required this.code}) : super(key: key);
+  String idResponsavel;
+  String token;
+  CadastroPage2({Key? key, required this.idResponsavel, required this.token})
+      : super(key: key);
 
   @override
   // ignore: no_logic_in_create_state
-  State<CadastroPage2> createState() => _CadastroPage2(code);
+  State<CadastroPage2> createState() => _CadastroPage2();
 }
 
 class _CadastroPage2 extends State<CadastroPage2> {
   var serviceCadastro = ServiceCadastroAssistido();
-  String code;
-
-  _CadastroPage2(this.code);
 
   final _formKey = GlobalKey<FormState>();
   final loading = ValueNotifier<bool>(false);
@@ -53,10 +52,7 @@ class _CadastroPage2 extends State<CadastroPage2> {
   }
 
   int _extraiResponsavelId(String code) {
-    int id = 0;
-    int inicio = code.length - 5;
-    var result = code.substring(inicio);
-    id = int.tryParse(result.toString())!;
+    var id = int.tryParse(code)!;
     return id;
   }
 
@@ -187,7 +183,9 @@ class _CadastroPage2 extends State<CadastroPage2> {
                           var formValid =
                               _formKey.currentState?.validate() ?? false;
                           if (formValid) {
-                            var responsavelId = _extraiResponsavelId(code);
+                            var responsavelId =
+                                _extraiResponsavelId(widget.idResponsavel);
+
                             var cadastro = CadastroUsuario(
                                 _controladorCampoNome.text,
                                 _controladorCampoUsername.text,
@@ -198,7 +196,8 @@ class _CadastroPage2 extends State<CadastroPage2> {
                                 _controladorCampoSenha.text,
                                 _controladorCampoConfSenha.text);
                             cadastro.ResponsavelId = responsavelId;
-                            serviceCadastro.criaCadastro(cadastro, context);
+                            serviceCadastro.criaCadastro(
+                                cadastro, context, widget.token);
                             loading.value = !loading.value;
                           }
                         },

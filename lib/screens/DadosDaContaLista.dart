@@ -6,7 +6,9 @@ import 'package:http/http.dart' as http;
 
 class DadosDaContaLista extends StatefulWidget {
   var token;
-  DadosDaContaLista({Key? key, required this.token}) : super(key: key);
+  bool? temAssistido;
+  DadosDaContaLista({Key? key, required this.token, this.temAssistido})
+      : super(key: key);
 
   @override
   State<DadosDaContaLista> createState() => _DadosDaContaLista();
@@ -49,11 +51,9 @@ class _DadosDaContaLista extends State<DadosDaContaLista> {
       body: ListView(
         children: [
           EditarDadosResponsavel(token: widget.token),
-          temAssistido == null
-              ? Text('')
-              : temAssistido == false
-                  ? CadastrarAssistido(token: widget.token, id: id)
-                  : EditarDadosAssistido(token: widget.token),
+          widget.temAssistido == false
+              ? CadastrarAssistido(token: widget.token, id: id)
+              : EditarDadosAssistido(token: widget.token),
         ],
       ),
     );
@@ -67,7 +67,7 @@ class EditarDadosResponsavel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.all(1),
+      margin: const EdgeInsets.all(1),
       child: Column(
         //mainAxisSize: MainAxisSize.min,
         children: [
@@ -96,7 +96,7 @@ class EditarDadosAssistido extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.all(1),
+      margin: const EdgeInsets.all(1),
       child: Column(
         //mainAxisSize: MainAxisSize.min,
         children: [
@@ -127,7 +127,7 @@ class CadastrarAssistido extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.all(1),
+      margin: const EdgeInsets.all(1),
       child: Column(
         //mainAxisSize: MainAxisSize.min,
         children: [
@@ -139,7 +139,8 @@ class CadastrarAssistido extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => CadastroPage2(code: id),
+                  builder: (context) =>
+                      CadastroPage2(idResponsavel: id, token: token),
                 ),
               );
             },

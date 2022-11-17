@@ -170,45 +170,48 @@ class _TarefasPageState extends State<TarefasPage> {
                                 style: const TextStyle(color: Colors.red),
                               )
                             : Text(subtitle),
-                        trailing: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.white,
-                            onPrimary: Colors.red,
-                            elevation: 0,
-                          ),
-                          onPressed: () async {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: const Text("Tem certeza?"),
-                                  actionsAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  actions: [
-                                    FlatButton(
-                                      child: const Text("CANCELAR"),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                    ),
-                                    FlatButton(
-                                      child: const Text("OK"),
-                                      onPressed: () async {
-                                        serviceTarefas
-                                            .excluirTarefa(
-                                                tarefa['id'].toString(),
-                                                widget.token,
-                                                context)
-                                            .then((value) => _recarregaLista());
-                                      },
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          },
-                          child: const Icon(Icons.delete),
-                        ),
+                        trailing: role == "responsavel"
+                            ? ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: Colors.white,
+                                  onPrimary: Colors.red,
+                                  elevation: 0,
+                                ),
+                                onPressed: () async {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text("Tem certeza?"),
+                                        actionsAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        actions: [
+                                          FlatButton(
+                                            child: const Text("CANCELAR"),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                          FlatButton(
+                                            child: const Text("OK"),
+                                            onPressed: () async {
+                                              serviceTarefas
+                                                  .excluirTarefa(
+                                                      tarefa['id'].toString(),
+                                                      widget.token,
+                                                      context)
+                                                  .then((value) =>
+                                                      _recarregaLista());
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: const Icon(Icons.delete),
+                              )
+                            : null,
                       ),
                     );
                   },

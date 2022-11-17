@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/HistoricoTarefasPage.dart';
 import 'package:flutter_application_1/screens/LoginPage.dart';
 import 'package:flutter_application_1/screens/TarefasPage.dart';
-
+import '../Conexoes/ServiceConta.dart';
 import '../models/Token.dart';
 import 'DadosDaContaLista.dart';
-import 'DadosDaContaPage.dart';
 
 class HomePage extends StatefulWidget {
   var token;
@@ -183,12 +182,19 @@ class _HomePageState extends State<HomePage> {
                             primary: Colors.white,
                             onPrimary: Colors.black,
                           ),
-                          onPressed: () {
+                          onPressed: () async {
+                            var temAssistido = await ServiceConta()
+                                .fazRequisicaoRecuperaSeTemAssistidoCadastrado(
+                                    widget.token);
+                            // ignore: use_build_context_synchronously
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      DadosDaContaLista(token: widget.token)),
+                                builder: (context) => DadosDaContaLista(
+                                  token: widget.token,
+                                  temAssistido: temAssistido,
+                                ),
+                              ),
                             );
                           },
                           child: Column(

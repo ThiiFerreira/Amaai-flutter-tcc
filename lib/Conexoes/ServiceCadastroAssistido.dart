@@ -1,3 +1,5 @@
+import 'package:flutter_application_1/screens/HomePage.dart';
+
 import '../models/CadastroUsuario.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/components/AlertaMensagem.dart';
@@ -5,7 +7,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class ServiceCadastroAssistido {
-  void criaCadastro(CadastroUsuario cadastro, BuildContext context) async {
+  void criaCadastro(
+      CadastroUsuario cadastro, BuildContext context, String token) async {
     var response = await _realizaCadastro(cadastro);
     var json = jsonDecode(utf8.decode(response.bodyBytes));
 
@@ -18,9 +21,14 @@ class ServiceCadastroAssistido {
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
       // ignore: use_build_context_synchronously
-      Navigator.pop(context, true);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomePage(token: token),
+        ),
+      );
     } else if (response.statusCode == 500) {
-      var mensagem = Text(json[0]['message']).toString();
+      var mensagem = (json[0]['message']).toString();
       showDialog(
         context: context,
         builder: (BuildContext context) {
