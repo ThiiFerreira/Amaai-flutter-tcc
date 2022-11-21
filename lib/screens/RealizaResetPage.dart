@@ -72,125 +72,127 @@ class _RealizaResetState extends State<RealizaReset> {
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Center(
-              child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  width: 200,
-                  height: 200,
-                  child: Image.asset("assets/Reset.png"),
-                ),
-                const SizedBox(
-                  height: 25,
-                ),
-                const Text(
-                  "Alterar sua senha",
-                  style: TextStyle(fontSize: 32, fontWeight: FontWeight.w500),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                CampoPreenchimento(
-                    controlador: _controladorCampoCodigoConfirmacao,
-                    rotulo: "Codigo de Confirmação",
-                    icone: Icons.pin),
-                const SizedBox(
-                  height: 10,
-                ),
-                CampoSenha(
-                  controlador: _controladorCampoSenha,
-                  rotulo: 'Nova Senha',
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                CampoConfirmaSenha(
-                    controlador: _controladorCampoConfSenha,
-                    controladorVerificaIgualdadeSenha: _controladorCampoSenha,
-                    rotulo: 'Confirmar Nova Senha'),
-                const SizedBox(
-                  height: 25,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    height: 60,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(5),
+          child: SingleChildScrollView(
+            child: Center(
+                child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    width: 200,
+                    height: 200,
+                    child: Image.asset("assets/Reset.png"),
+                  ),
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  const Text(
+                    "Alterar sua senha",
+                    style: TextStyle(fontSize: 32, fontWeight: FontWeight.w500),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  CampoPreenchimento(
+                      controlador: _controladorCampoCodigoConfirmacao,
+                      rotulo: "Codigo de Confirmação",
+                      icone: Icons.pin),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  CampoSenha(
+                    controlador: _controladorCampoSenha,
+                    rotulo: 'Nova Senha',
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  CampoConfirmaSenha(
+                      controlador: _controladorCampoConfSenha,
+                      controladorVerificaIgualdadeSenha: _controladorCampoSenha,
+                      rotulo: 'Confirmar Nova Senha'),
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      height: 60,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(5),
+                        ),
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          stops: const [0.3, 1],
+                          colors: [
+                            Colors.blue[900]!,
+                            Colors.blue,
+                          ],
+                        ),
                       ),
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        stops: const [0.3, 1],
-                        colors: [
-                          Colors.blue[900]!,
-                          Colors.blue,
-                        ],
-                      ),
-                    ),
-                    child: SizedBox.expand(
-                      child: TextButton(
-                        child: AnimatedBuilder(
-                          animation: loading,
-                          builder: (context, _) {
-                            return loading.value
-                                ? const SizedBox(
-                                    width: 20,
-                                    height: 20,
-                                    child: CircularProgressIndicator(
-                                      color: Colors.white,
-                                    ),
-                                  )
-                                : const Text(
-                                    "Mudar senha",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                    ),
-                                  );
+                      child: SizedBox.expand(
+                        child: TextButton(
+                          child: AnimatedBuilder(
+                            animation: loading,
+                            builder: (context, _) {
+                              return loading.value
+                                  ? const SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                      child: CircularProgressIndicator(
+                                        color: Colors.white,
+                                      ),
+                                    )
+                                  : const Text(
+                                      "Mudar senha",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                      ),
+                                    );
+                            },
+                          ),
+                          onPressed: () {
+                            var formValid =
+                                _formKey.currentState?.validate() ?? false;
+                            if (formValid) {
+                              loading.value = !loading.value;
+                              var reset = camposReset(
+                                  widget.email,
+                                  _controladorCampoSenha.text,
+                                  _controladorCampoConfSenha.text,
+                                  widget.token);
+                              if (widget.codigoVerificacao.toString() ==
+                                  _controladorCampoCodigoConfirmacao.text) {
+                                serviceResetSenha.realizaResetSenha(
+                                    reset, context);
+                              } else {
+                                var mensagem = "Falha ao redefinir senha";
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertaMensagem(mensagem: mensagem);
+                                  },
+                                );
+                                loading.value = !loading.value;
+                              }
+                            }
                           },
                         ),
-                        onPressed: () {
-                          var formValid =
-                              _formKey.currentState?.validate() ?? false;
-                          if (formValid) {
-                            loading.value = !loading.value;
-                            var reset = camposReset(
-                                widget.email,
-                                _controladorCampoSenha.text,
-                                _controladorCampoConfSenha.text,
-                                widget.token);
-                            if (widget.codigoVerificacao.toString() ==
-                                _controladorCampoCodigoConfirmacao.text) {
-                              serviceResetSenha.realizaResetSenha(
-                                  reset, context);
-                            } else {
-                              var mensagem = "Falha ao redefinir senha";
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertaMensagem(mensagem: mensagem);
-                                },
-                              );
-                              loading.value = !loading.value;
-                            }
-                          }
-                        },
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          )),
+                ],
+              ),
+            )),
+          ),
         ),
       ),
     );

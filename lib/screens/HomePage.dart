@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/HistoricoTarefasPage.dart';
 import 'package:flutter_application_1/screens/LoginPage.dart';
 import 'package:flutter_application_1/screens/TarefasPage.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import '../Conexoes/ServiceConta.dart';
 import '../models/Token.dart';
 import 'DadosDaContaLista.dart';
@@ -16,6 +17,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  bool isSpeaking = false;
+  final _flutterTts = FlutterTts();
+
   Future<bool?> confirmacaoSairDoApp() {
     return showDialog(
       context: context,
@@ -35,6 +39,48 @@ class _HomePageState extends State<HomePage> {
         );
       },
     );
+  }
+
+  void initializeTts() {
+    _flutterTts.setStartHandler(() {
+      setState(() {
+        isSpeaking = true;
+      });
+    });
+    _flutterTts.setCompletionHandler(() {
+      setState(() {
+        isSpeaking = false;
+      });
+    });
+    _flutterTts.setErrorHandler((message) {
+      setState(() {
+        isSpeaking = false;
+      });
+    });
+    _flutterTts.setLanguage("pt-br");
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initializeTts();
+  }
+
+  void speak(String itemHome) async {
+    await _flutterTts.speak(itemHome);
+  }
+
+  void stop() async {
+    await _flutterTts.stop();
+    setState(() {
+      isSpeaking = false;
+    });
+  }
+
+  @override
+  void dispose() {
+    _flutterTts.stop();
+    super.dispose();
   }
 
   @override
@@ -87,6 +133,9 @@ class _HomePageState extends State<HomePage> {
                                     TarefasPage(token: widget.token)),
                           );
                         },
+                        onLongPress: () {
+                          speak("Tarefas agendadas");
+                        },
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: const [
@@ -133,6 +182,9 @@ class _HomePageState extends State<HomePage> {
                                 builder: (context) =>
                                     HistoricoTarefas(token: widget.token)),
                           );
+                        },
+                        onLongPress: () {
+                          speak("Histórico de tarefas");
                         },
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -197,6 +249,9 @@ class _HomePageState extends State<HomePage> {
                               ),
                             );
                           },
+                          onLongPress: () {
+                            speak("Dados da conta");
+                          },
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: const [
@@ -238,6 +293,9 @@ class _HomePageState extends State<HomePage> {
                         ),
                         onPressed: () {
                           _deslogarDaConta();
+                        },
+                        onLongPress: () {
+                          speak("Sair");
                         },
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
